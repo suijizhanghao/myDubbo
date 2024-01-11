@@ -1,0 +1,61 @@
+spring:
+  thymeleaf:
+    cache: true
+    check-template: true
+    check-template-location: true
+    content-type: text/html
+    enabled: true
+    encoding: UTF-8
+    excluded-view-names: null
+    mode: HTML5
+    prefix: classpath:/templates/
+    suffix: .html
+dubbo:
+  registry:
+    address: zookeeper://${zookeeper.address:127.0.0.1}:2181
+  protocol:
+    name: dubbo
+    port: 20880
+  tracing:
+    enabled: true
+    sampling:
+      probability: 0.5
+    propagation:
+      type: W3C
+    tracing-exporter:
+      zipkin-config:
+        endpoint: http://localhost:9411/api/v2/spans
+        connect-timeout: 1s
+        read-timeout: 10s
+  metadata-report:
+    address: redis://${redis.address:127.0.0.1}:6379
+  application:
+    name: MyDubboApplication
+    qos-enable: true
+    qos-port: 22222
+    logger: slf4j
+    qos-accept-foreign-ip: true
+server:
+  port: 8080
+logging:
+  level:
+    root: info
+  pattern:
+    console: '[%d{dd/MM/yy HH:mm:ss:SSS z}] %t %5p %c{2} [%X{traceId:-}, %X{spanId:-}]:
+      %m%n'
+management:
+  metrics:
+    enabled: true
+  endpoints:
+    jmx:
+      exposure:
+        include: '*'
+    web:
+      base-path: /
+      exposure:
+        include: '*'
+  endpoint:
+    health:
+      show-details: always
+  server:
+    port: 7002
